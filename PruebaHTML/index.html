@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <!-- SCROOLL REVEAL JS LIBRARY CDN -->
     <script src="https://unpkg.com/scrollreveal"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <!-- CSS PROPIO -->
     <link rel="stylesheet" href="CSS/main.css">
   </head>
@@ -167,20 +172,21 @@
       <div class="container">
         <div class="row">
           <div class="col-md-5">
-              <form class="card my-5" action="alta.php" method="post">
+              <form id="formdatos"class="card my-5"  method="POST">
                 <div class="card-body">
                   <div class="form-group">
+
                       <input type="text" name="name" value="" placeholder="Name" class="form-control">
                   </div>
 
                   <div class="form-group">
-                      <input type="email" name="email" value="" placeholder="Email" class="form-control">
+                      <input type="text" name="email" value="" placeholder="Email" class="form-control">
                   </div>
 
                   <div class="form-group">
                       <textarea name="mensaje" rows="10" cols="30"  class="form-control" placeholder="Mensaaje"></textarea>
                   </div>
-                      <button type="submit" class="btn btn-outline-secondary btn-block">Send</button>
+                      <button type='button'   id="btnenviar" class="btn btn-outline-secondary btn-block">Send</button>
                 </div>
 
               </form>
@@ -191,13 +197,9 @@
 
 <!-- carousel-->
   <div id="carouselExampleControls" class="carousel slide mt-5" data-ride="carousel">
-  <!-- <div class="carousel-inner">
+  <div class="carousel-inner" id="idcarusel">
 
-
-    <div class="carousel-item active">
-
-
-
+    <!-- <div class="carousel-item active">
       <img src="imagenes/imagen1.png"  class="d-block w-100" width="2000" height="500">
     </div>
     <div class="carousel-item">
@@ -205,7 +207,7 @@
     </div>
     <div class="carousel-item">
       <img src="imagenes/imagen3.png" class="d-block w-100"width="2000" height="500">
-    </div>
+    </div> -->
   </div>
 
   <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -215,15 +217,13 @@
   <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="sr-only">Next</span>
-  </a> -->
+  </a>
 </div>
 
 
 
    <!-- SCRIPTS -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
 
   <!-- SCROOLL REVEAL SCRIPT -->
 <script>
@@ -269,6 +269,94 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
  });
 });
 </script>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+var tipo=1;
+    $.ajax({
+      type:"POST",
+      url:"operaciones.php",
+      data:{tipo:tipo},
+      success:function(data){
+        // alert(data);
+         document.getElementById('idcarusel').innerHTML=data;
+        // alert(r);
+        // if(r==1){
+        //   alert("agregado con exito");
+        // }else{
+        //   alert("Fallo");
+        // }
+      }
+    });
+
+
+		$('#btnenviar').click(function(){
+			var datos=$('#formdatos').serialize();
+      // alert(datos);
+var tipo=2;
+			$.ajax({
+				type:"POST",
+				url:"operaciones.php",
+				data:{datos:datos,tipo:tipo},
+				success:function(r){
+          alert(r);
+					if(r==1){
+						alert("agregado con exito");
+					}else{
+						alert("Fallo");
+					}
+				}
+			});
+
+			return false;
+		});
+	});
+</script>
+
+
+
+
+
+
+<!-- <script type="text/javascript">
+
+function enviar(){
+
+  var aux=document.getElementById("name").value;
+  var aux1=document.getElementById("email").value;
+  var aux2=document.getElementById("mensaje").value;
+
+
+  var Event=[];
+  Event[0]=1;
+  Event[1]=aux;
+  Event[2]=aux1;
+  Event[3]=aux2;
+  $.ajax({
+    url: 'operaciones.php',
+    type: "POST",
+    data: {Event:Event},
+    success: function(data) {
+      //alert(data);
+    }
+  });
+}
+
+  // var Event=[];
+  // Event[0]="2";
+  //
+  // $.ajax({
+  //   url: 'operaciones.php',
+  //   type: "POST",
+  //   data: {Event:Event},
+  //   success: function(data) {
+  //     document.elementbyide.innerHtml=data;
+  //   }
+  // });
+
+</script> -->
+
 
   </body>
 

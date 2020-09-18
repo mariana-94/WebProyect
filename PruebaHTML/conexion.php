@@ -1,8 +1,11 @@
-<?php
-$mysqli = new mysqli("localhost", "root", "", "datosbd");
-if ($mysqli->connect_errno) {
-    echo "Fallo al conectar a MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-}
-echo $mysqli->host_info . "\n";
 
+<?php
+//conexion a la base de datos
+global $conec;
+					              // localhost, user, password
+$conec = mysqli_connect("localhost", "root", "");
+mysqli_select_db($conec, "datosbd");
+
+//conjunto de caraxcteres (charset)
+mysqli_query($conec, "set names utf8mb4") or die(mysqli_error($conec));
 ?>
